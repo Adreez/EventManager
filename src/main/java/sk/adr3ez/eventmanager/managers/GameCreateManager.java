@@ -43,7 +43,7 @@ public class GameCreateManager implements Listener {
     private void onItemClick(PlayerInteractEvent e) {
         Player p = e.getPlayer();
 
-        //if (playersInSetup.contains(p)) {
+        if (playersInSetup.contains(p)) {
             /*ItemStack item = new ItemStack(Material.EMERALD, 1);
             ItemMeta itemMeta = item.getItemMeta();
             itemMeta.setDisplayName("§7Set &e&lGame Spawn");
@@ -57,7 +57,7 @@ public class GameCreateManager implements Listener {
             } else {
                 p.sendMessage("Nope.");
             }
-        //}
+        }
     }
     @EventHandler
     private void preventFromDrop(PlayerDropItemEvent e) {

@@ -1,0 +1,9 @@
+name: EventManager
+version: '${project.version}'
+main: sk.adr3ez.eventmanager.EventManager
+api-version: 1.18
+softdepend: [ PlaceholderAPI ]
+authors: [ Adr3ez_ ]
+commands:
+  event:
+    description: Default plugin command

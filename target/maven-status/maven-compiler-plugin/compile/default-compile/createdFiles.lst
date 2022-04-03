@@ -1,0 +1,9 @@
+sk\adr3ez\eventmanager\managers\GameCreateManager.class
+sk\adr3ez\eventmanager\files\Config.class
+sk\adr3ez\eventmanager\commands\event\EventCmdManager.class
+sk\adr3ez\eventmanager\commands\event\subcommands\reload.class
+sk\adr3ez\eventmanager\managers\GamesManager.class
+sk\adr3ez\eventmanager\commands\event\SubCommand.class
+sk\adr3ez\eventmanager\EventManager.class
+sk\adr3ez\eventmanager\commands\event\subcommands\create.class
+sk\adr3ez\eventmanager\files\Games.class

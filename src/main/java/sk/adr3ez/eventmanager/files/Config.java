@@ -16,7 +16,6 @@ public class Config {
 
     public Config(EventManager plugin) {
         this.plugin = plugin;
-
         reloadFiles();
     }
 
@@ -28,13 +27,11 @@ public class Config {
             plugin.getLogger().info("§3File " + fileName + " has not been found. Creating new one.");
         }
         customFile = YamlConfiguration.loadConfiguration(file);
-
     }
 
     public FileConfiguration get() {
         if (customFile == null)
             reloadFiles();
-
         return customFile;
     }
 

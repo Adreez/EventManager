@@ -3,7 +3,6 @@ package sk.adr3ez.eventmanager.commands.event.subcommands;
 import org.bukkit.entity.Player;
 import sk.adr3ez.eventmanager.EventManager;
 import sk.adr3ez.eventmanager.commands.event.SubCommand;
-import sk.adr3ez.eventmanager.managers.GameCreateManager;
 
 public class create extends SubCommand {
     @Override

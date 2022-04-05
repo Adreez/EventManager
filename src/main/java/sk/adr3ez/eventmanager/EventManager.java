@@ -27,8 +27,8 @@ public final class EventManager extends JavaPlugin {
 
         Objects.requireNonNull(Bukkit.getPluginCommand("event")).setExecutor(new EventCmdManager());
 
-        getServer().getPluginManager().registerEvents(new GameCreateManager(), this);
         gcm = new GameCreateManager();
+        getServer().getPluginManager().registerEvents(gcm, this);
 
     }
 

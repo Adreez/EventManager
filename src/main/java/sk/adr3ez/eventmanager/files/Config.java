@@ -5,34 +5,63 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import sk.adr3ez.eventmanager.EventManager;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.logging.Level;
 
 public class Config {
 
     private final EventManager plugin;
-    private FileConfiguration customFile;
-    private File file;
-    String fileName = "config.yml";
-
+    private FileConfiguration dataConfig = null;
+    private File configFile = null;
+    private final String fileName = "config.yml";
 
     public Config(EventManager plugin) {
         this.plugin = plugin;
-        reloadFiles();
+
+        //Saves/initialises the config
+        saveDefaultConfig();
     }
 
     public void reloadFiles() {
-        if (file == null)
-            file = new File(this.plugin.getDataFolder(), fileName);
-        if (!file.exists()) {
-            this.plugin.saveResource(fileName, false);
-            plugin.getLogger().info("§3File " + fileName + " has not been found. Creating new one.");
+        if(this.configFile == null)
+            this.configFile = new File(this.plugin.getDataFolder(), fileName);
+        this.dataConfig = YamlConfiguration.loadConfiguration(this.configFile);
+
+        InputStream defaultStream = this.plugin.getResource(fileName);
+        if(defaultStream != null) {
+            YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultStream));
+            this.dataConfig.setDefaults(defaultConfig);
         }
-        customFile = YamlConfiguration.loadConfiguration(file);
     }
 
     public FileConfiguration get() {
-        if (customFile == null)
+
+        if(this.dataConfig == null)
             reloadFiles();
-        return customFile;
+        return this.dataConfig;
+    }
+
+    public void saveConfig() {
+        this.plugin.getLogger().log(Level.INFO, "File " + fileName + " has been saved!");
+        if(this.dataConfig == null || this.configFile == null) {
+            return;
+        }
+
+        try {
+            this.get().save(this.configFile);
+        } catch (IOException e) {
+            this.plugin.getLogger().log(Level.SEVERE, "Could not save config to " + this.configFile, e);
+        }
+    }
+
+    public void saveDefaultConfig() {
+        if(this.configFile == null)
+            this.configFile = new File(this.plugin.getDataFolder(), fileName);
+        if(!this.configFile.exists()) {
+            this.plugin.saveResource(fileName, false);
+        }
     }
 
 }

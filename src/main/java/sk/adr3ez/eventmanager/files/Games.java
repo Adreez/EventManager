@@ -44,7 +44,7 @@ public class Games {
     }
 
     public void saveConfig() {
-        System.out.println("§bFile " + fileName + " has been saved.");
+        this.plugin.getLogger().log(Level.INFO, "File " + fileName + " has been saved!");
         if(this.dataConfig == null || this.configFile == null) {
             return;
         }

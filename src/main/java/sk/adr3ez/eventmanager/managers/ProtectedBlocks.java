@@ -15,9 +15,9 @@ public class ProtectedBlocks implements Listener {
     ArrayList<Location> protectedBlocks = new ArrayList<>();
 
     public ProtectedBlocks() {
-        Bukkit.getServer().getConsoleSender().sendMessage(EventManager.games.get().getString("Messages.test"));
-        if (!EventManager.games.get().getValues(false).isEmpty()) {
-            gamesList.addAll(EventManager.games.get().getConfigurationSection("Games.").getKeys(false));
+        Bukkit.getServer().getConsoleSender().sendMessage(EventManager.gamesFile.get().getString("Messages.test"));
+        if (!EventManager.gamesFile.get().getValues(false).isEmpty()) {
+            gamesList.addAll(EventManager.gamesFile.get().getConfigurationSection("Games.").getKeys(false));
         }
         loadBlocks();
     }
@@ -26,16 +26,24 @@ public class ProtectedBlocks implements Listener {
         protectedBlocks.clear();
         if (gamesList != null) {
             for (String s : gamesList) {
-                protectedBlocks.add(new Location(Bukkit.getWorld(EventManager.games.get().getString("Games." + s + ".locations.end.world")),
+                protectedBlocks.add(new Location(Bukkit.getWorld(EventManager.gamesFile.get().getString("Games." + s + ".locations.end.world")),
+                        EventManager.gamesFile.get().getDouble("Games." + s + ".locations.end.x"),
+                        EventManager.gamesFile.get().getDouble("Games." + s + ".locations.end.y"),
+                        EventManager.gamesFile.get().getDouble("Games." + s + ".locations.end.z")));
+               /* protectedBlocks.add(new Location(Bukkit.getWorld(EventManager.games.get().getString("Games." + s + ".locations.end.world")),
                         EventManager.games.get().getDouble("Games." + s + ".locations.end.x"),
-                        EventManager.games.get().getDouble("Games." + s + ".locations.end.y"),
-                        EventManager.games.get().getDouble("Games." + s + ".locations.end.z")));
+                        EventManager.games.get().getDouble("Games." + s + ".locations.end.y")-1,
+                        EventManager.games.get().getDouble("Games." + s + ".locations.end.z")));*/
             }
         }
     }
 
     public void addBlock(Location loc) {
         protectedBlocks.add(loc.getBlock().getLocation());
+    }
+
+    public void deleteBlock(Location loc) {
+        protectedBlocks.remove(loc);
     }
 
     @EventHandler

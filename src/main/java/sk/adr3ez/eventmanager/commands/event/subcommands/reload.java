@@ -23,8 +23,8 @@ public class reload extends SubCommand {
     @Override
     public void perform(Player p, String[] args) {
         EventManager.protectedBlocks.loadBlocks();
-        EventManager.config.reloadFiles();
-        EventManager.games.reloadFiles();
+        EventManager.configFile.reloadFiles();
+        EventManager.gamesFile.reloadFiles();
         p.sendMessage("Files reloaded!");
     }
 }

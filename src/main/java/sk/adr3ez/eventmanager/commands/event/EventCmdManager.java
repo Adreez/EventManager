@@ -17,6 +17,8 @@ public class EventCmdManager implements CommandExecutor {
         subcommands.add(new reload());
         subcommands.add(new create());
         subcommands.add(new delete());
+        subcommands.add(new start());
+        subcommands.add(new join());
     }
 
     @Override

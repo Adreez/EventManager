@@ -1,5 +1,9 @@
 Storage:
 
+Settings:
+  #Teleports player after joining server or if they already are on server.
+  auto-player-teleport: true
+
 Default-Settings:
 
 Messages:

@@ -1,10 +1,8 @@
 package sk.adr3ez.eventmanager.managers;
 
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -13,6 +11,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import sk.adr3ez.eventmanager.EventManager;
+import sk.adr3ez.eventmanager.enums.GameType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,11 +22,14 @@ public class GameCreateManager implements Listener {
     private final HashMap<Player, String> gameSetupID = new HashMap<>();
     private final HashMap<Player, Location> gameSetupSpawnLocation = new HashMap<>();
     private final HashMap<Player, Location> gameSetupEndingLocation = new HashMap<>();
+    private final HashMap<Player, GameType> gameSetupGameType = new HashMap<>();
 
     public void setup(Player p, String gameID) {
         if (!gameExists(gameID)) {
             if (!playersInSetup.contains(p)) {
-                p.sendMessage("New game creation setup has been started for " + gameID);
+                p.sendMessage("New game creation setup has been started for §3" + gameID);
+
+                gameSetupGameType.put(p, GameType.race);
                 playersInSetup.add(p);
                 gameSetupID.put(p, gameID);
 
@@ -60,6 +62,17 @@ public class GameCreateManager implements Listener {
                 item3.setItemMeta(itemMeta3);
                 p.getInventory().setItem(1, item3);
 
+                ItemStack item4 = new ItemStack(Material.NETHER_STAR, 1);
+                ItemMeta itemMeta4 = item4.getItemMeta();
+                itemMeta4.setDisplayName("§e§lMENU");
+                ArrayList<String> itemLore4 = new ArrayList<>();
+                itemLore4.add("");
+                itemLore4.add("  §8• §7Other settings like: GameType, etc...");
+                itemLore4.add("");
+                itemMeta4.setLore(itemLore4);
+                item.setItemMeta(itemMeta4);
+                p.getInventory().setItem(2, item4);
+
 
             } else {
                 p.sendMessage("You are already in event setup editor.");
@@ -81,17 +94,20 @@ public class GameCreateManager implements Listener {
                 } else if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.GREEN_WOOL) {
                     if (gameSetupSpawnLocation.containsKey(e.getPlayer())) {
                         if (gameSetupEndingLocation.containsKey(e.getPlayer())) {
-                            createGame(gameSetupID.get(e.getPlayer()),
-                                    e.getPlayer().getName(),
-                                    gameSetupSpawnLocation.get(e.getPlayer()),
-                                    gameSetupEndingLocation.get(e.getPlayer()));
-
-                            p.sendMessage("§3Game has been created!");
-                            p.getInventory().clear();
-                            playersInSetup.remove(p);
-                            gameSetupEndingLocation.remove(e.getPlayer());
-                            gameSetupID.remove(e.getPlayer());
-                            gameSetupSpawnLocation.remove(e.getPlayer());
+                            if (gameSetupGameType.containsKey(p)) {
+                                createGame(gameSetupID.get(p), p.getName(), gameSetupSpawnLocation.get(p),
+                                        gameSetupEndingLocation.get(p), gameSetupGameType.get(p)
+                                );
+                                p.sendMessage("§3Game has been created!");
+                                p.getInventory().clear();
+                                playersInSetup.remove(p);
+                                gameSetupEndingLocation.remove(p);
+                                gameSetupID.remove(p);
+                                gameSetupSpawnLocation.remove(p);
+                                gameSetupGameType.remove(p);
+                            } else {
+                                p.sendMessage("You must set gameType!");
+                            }
                         } else {
                             p.sendMessage("You must set ending location before creating game!");
                         }
@@ -101,6 +117,8 @@ public class GameCreateManager implements Listener {
                 } else if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.DIAMOND) {
                     gameSetupEndingLocation.put(e.getPlayer(), e.getPlayer().getLocation());
                     p.sendMessage("Ending location has been set!");
+                } else if (p.getInventory().getItemInMainHand().getType() == Material.NETHER_STAR) {
+                    p.sendMessage("HA! This is currently in progress of making! If it is too long... i don't care! :)");
                 }
             }
         }
@@ -124,25 +142,26 @@ public class GameCreateManager implements Listener {
     }*/
 
     public boolean gameExists(String gameID) {
-        return EventManager.games.get().get("Games." + gameID) != null;
+        return EventManager.gamesFile.get().get("Games." + gameID) != null;
     }
 
-    public void createGame(String gameID, String creator, Location spawnLoc, Location endingLoc) {
-        EventManager.games.get().set("Games." + gameID + ".info.creator", creator);
-        EventManager.games.get().set("Games." + gameID + ".locations.spawn.world", spawnLoc.getWorld().getName());
-        EventManager.games.get().set("Games." + gameID + ".locations.spawn.x", spawnLoc.getBlockX());
-        EventManager.games.get().set("Games." + gameID + ".locations.spawn.y", spawnLoc.getBlockY());
-        EventManager.games.get().set("Games." + gameID + ".locations.spawn.z", spawnLoc.getBlockZ());
-        EventManager.games.get().set("Games." + gameID + ".locations.spawn.pitch", spawnLoc.getPitch());
-        EventManager.games.get().set("Games." + gameID + ".locations.spawn.yaw", spawnLoc.getYaw());
+    public void createGame(String gameID, String creator, Location spawnLoc, Location endingLoc, GameType gameType) {
+        EventManager.gamesFile.get().set("Games." + gameID + ".gameType", gameType.toString());
+        EventManager.gamesFile.get().set("Games." + gameID + ".info.creator", creator);
+        EventManager.gamesFile.get().set("Games." + gameID + ".locations.spawn.world", spawnLoc.getWorld().getName());
+        EventManager.gamesFile.get().set("Games." + gameID + ".locations.spawn.x", spawnLoc.getBlockX());
+        EventManager.gamesFile.get().set("Games." + gameID + ".locations.spawn.y", spawnLoc.getBlockY());
+        EventManager.gamesFile.get().set("Games." + gameID + ".locations.spawn.z", spawnLoc.getBlockZ());
+        EventManager.gamesFile.get().set("Games." + gameID + ".locations.spawn.pitch", spawnLoc.getPitch());
+        EventManager.gamesFile.get().set("Games." + gameID + ".locations.spawn.yaw", spawnLoc.getYaw());
 
-        EventManager.games.get().set("Games." + gameID + ".locations.end.world", endingLoc.getWorld().getName());
-        EventManager.games.get().set("Games." + gameID + ".locations.end.x", endingLoc.getBlockX());
-        EventManager.games.get().set("Games." + gameID + ".locations.end.y", endingLoc.getBlockY());
-        EventManager.games.get().set("Games." + gameID + ".locations.end.z", endingLoc.getBlockZ());
+        EventManager.gamesFile.get().set("Games." + gameID + ".locations.end.world", endingLoc.getWorld().getName());
+        EventManager.gamesFile.get().set("Games." + gameID + ".locations.end.x", endingLoc.getBlockX());
+        EventManager.gamesFile.get().set("Games." + gameID + ".locations.end.y", endingLoc.getBlockY());
+        EventManager.gamesFile.get().set("Games." + gameID + ".locations.end.z", endingLoc.getBlockZ());
         EventManager.protectedBlocks.addBlock(endingLoc);
 
-        EventManager.games.saveConfig();
+        EventManager.gamesFile.saveConfig();
         endingLoc.getBlock().setType(Material.LIGHT_WEIGHTED_PRESSURE_PLATE);
     }
 }

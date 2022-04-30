@@ -2,13 +2,16 @@ C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\co
 C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\managers\GameDeleteManager.java
 C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\files\Config.java
 C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\commands\event\subcommands\reload.java
+C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\managers\FreezeManager.java
 C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\managers\ProtectedBlocks.java
+C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\commands\event\subcommands\setspawn.java
 C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\files\Games.java
 C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\commands\event\EventCmdManager.java
 C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\managers\GameCreateManager.java
 C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\commands\event\SubCommand.java
 C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\EventManager.java
-C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\enums\GameType.java
+C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\commands\event\subcommands\stop.java
+C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\commands\event\subcommands\leave.java
 C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\commands\event\subcommands\delete.java
 C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\managers\GameStartManager.java
 C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\commands\event\subcommands\start.java

@@ -5,15 +5,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import sk.adr3ez.eventmanager.commands.event.EventCmdManager;
 import sk.adr3ez.eventmanager.files.Config;
 import sk.adr3ez.eventmanager.files.Games;
-import sk.adr3ez.eventmanager.managers.GameStartManager;
-import sk.adr3ez.eventmanager.managers.GameCreateManager;
-import sk.adr3ez.eventmanager.managers.GameDeleteManager;
-import sk.adr3ez.eventmanager.managers.ProtectedBlocks;
+import sk.adr3ez.eventmanager.managers.*;
 
 import java.io.File;
 import java.util.Objects;
 
 public final class EventManager extends JavaPlugin {
+
+    public static EventManager plugin;
 
     public static Config configFile;
     public static Games gamesFile;
@@ -21,11 +20,13 @@ public final class EventManager extends JavaPlugin {
     public static GameDeleteManager gdm;
     public static ProtectedBlocks protectedBlocks;
     public static GameStartManager gsm;
+    public static FreezeManager fm;
 
     @Override
     public void onEnable() {
         new File("plugins/EventManager").mkdirs();
-        // Plugin startup logic
+
+        plugin = this;
 
         configFile = new Config(this);
         gamesFile = new Games(this);
@@ -36,6 +37,7 @@ public final class EventManager extends JavaPlugin {
         gcm = new GameCreateManager();
         gdm = new GameDeleteManager();
         gsm = new GameStartManager();
+        fm = new FreezeManager();
         getServer().getPluginManager().registerEvents(protectedBlocks, this);
         getServer().getPluginManager().registerEvents(gcm, this);
         getServer().getPluginManager().registerEvents(gsm, this);
@@ -44,6 +46,5 @@ public final class EventManager extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
     }
 }

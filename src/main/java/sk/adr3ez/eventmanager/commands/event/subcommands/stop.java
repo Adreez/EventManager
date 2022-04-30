@@ -4,30 +4,31 @@ import org.bukkit.entity.Player;
 import sk.adr3ez.eventmanager.EventManager;
 import sk.adr3ez.eventmanager.commands.event.SubCommand;
 
-public class create extends SubCommand {
+public class stop extends SubCommand {
     @Override
     public String getName() {
-        return "create";
+        return "stop";
     }
 
     @Override
     public String getDescription() {
-        return "Create new game.";
+        return "Stop active game";
     }
 
     @Override
     public String getSyntax() {
-        return "/event create <gameID>";
+        return "/event stop";
     }
 
     @Override
     public void perform(Player p, String[] args) {
-
         if (args.length == 1) {
-            p.sendMessage("usage");
-        }
-        else if (args.length >= 2) {
-            EventManager.gcm.setup(p, args[1]);
+            if (EventManager.gsm.activeGame != null) {
+                EventManager.gsm.stopActiveGame();
+                p.sendMessage("Game will be ended in 10 seconds!");
+            }
+        } else {
+            p.sendMessage("Usage");
         }
     }
 }

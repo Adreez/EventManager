@@ -1,12 +1,41 @@
 Storage:
+  #Please do not change storage-type. This thing is WIP
+  storage-type: MySQL
+  MySQL:
+    host: "localhost"
+    port: '3306'
+    username: ''
+    database: "EventManager"
+    useSSL: false
 
 Settings:
   #Teleports player after joining server or if they already are on server.
-  auto-player-teleport: true
+  auto-game-join: true
+  #Automatically teleports player to spawn on join
+  on-join-spawn: true
+  #Trun off /event leave
+  game-leave: false
 
 Locations:
+  #Please set using /event setspawn
+  spawn:
+    world: world
+    x: 30
+    y: 79
+    z: 0
+    yaw: 0.00
+    pitch: 0.00
 
+#This are default settings of all new created games.
 Default-Settings:
+  use-global-reward: true
+
+Global-rewards:
+  1:
+    - "give diamond %player% 5"
+  2:
+    - "give diamond %player% 4"
+  3:
+    - "give diamond %player% 3"
 
 Messages:
-  test: "This is test message."

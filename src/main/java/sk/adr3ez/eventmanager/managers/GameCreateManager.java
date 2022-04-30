@@ -11,7 +11,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import sk.adr3ez.eventmanager.EventManager;
-import sk.adr3ez.eventmanager.enums.GameType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,14 +21,12 @@ public class GameCreateManager implements Listener {
     private final HashMap<Player, String> gameSetupID = new HashMap<>();
     private final HashMap<Player, Location> gameSetupSpawnLocation = new HashMap<>();
     private final HashMap<Player, Location> gameSetupEndingLocation = new HashMap<>();
-    private final HashMap<Player, GameType> gameSetupGameType = new HashMap<>();
 
     public void setup(Player p, String gameID) {
         if (!gameExists(gameID)) {
             if (!playersInSetup.contains(p)) {
                 p.sendMessage("New game creation setup has been started for §3" + gameID);
 
-                gameSetupGameType.put(p, GameType.race);
                 playersInSetup.add(p);
                 gameSetupID.put(p, gameID);
 
@@ -94,20 +91,15 @@ public class GameCreateManager implements Listener {
                 } else if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.GREEN_WOOL) {
                     if (gameSetupSpawnLocation.containsKey(e.getPlayer())) {
                         if (gameSetupEndingLocation.containsKey(e.getPlayer())) {
-                            if (gameSetupGameType.containsKey(p)) {
-                                createGame(gameSetupID.get(p), p.getName(), gameSetupSpawnLocation.get(p),
-                                        gameSetupEndingLocation.get(p), gameSetupGameType.get(p)
-                                );
-                                p.sendMessage("§3Game has been created!");
-                                p.getInventory().clear();
-                                playersInSetup.remove(p);
-                                gameSetupEndingLocation.remove(p);
-                                gameSetupID.remove(p);
-                                gameSetupSpawnLocation.remove(p);
-                                gameSetupGameType.remove(p);
-                            } else {
-                                p.sendMessage("You must set gameType!");
-                            }
+
+                            createGame(gameSetupID.get(p), p.getName(), gameSetupSpawnLocation.get(p), gameSetupEndingLocation.get(p));
+                            p.sendMessage("§3Game has been created!");
+                            p.getInventory().clear();
+                            playersInSetup.remove(p);
+                            gameSetupEndingLocation.remove(p);
+                            gameSetupID.remove(p);
+                            gameSetupSpawnLocation.remove(p);
+
                         } else {
                             p.sendMessage("You must set ending location before creating game!");
                         }
@@ -145,8 +137,7 @@ public class GameCreateManager implements Listener {
         return EventManager.gamesFile.get().get("Games." + gameID) != null;
     }
 
-    public void createGame(String gameID, String creator, Location spawnLoc, Location endingLoc, GameType gameType) {
-        EventManager.gamesFile.get().set("Games." + gameID + ".gameType", gameType.toString());
+    public void createGame(String gameID, String creator, Location spawnLoc, Location endingLoc) {
         EventManager.gamesFile.get().set("Games." + gameID + ".info.creator", creator);
         EventManager.gamesFile.get().set("Games." + gameID + ".locations.spawn.world", spawnLoc.getWorld().getName());
         EventManager.gamesFile.get().set("Games." + gameID + ".locations.spawn.x", spawnLoc.getBlockX());

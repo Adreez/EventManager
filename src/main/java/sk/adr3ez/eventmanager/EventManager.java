@@ -21,6 +21,8 @@ public final class EventManager extends JavaPlugin {
     public static ProtectedBlocks protectedBlocks;
     public static GameStartManager gsm;
     public static FreezeManager fm;
+    public static GameManager gm;
+    public static CheckpointsManager cpm;
 
     @Override
     public void onEnable() {
@@ -36,12 +38,15 @@ public final class EventManager extends JavaPlugin {
         protectedBlocks = new ProtectedBlocks();
         gcm = new GameCreateManager();
         gdm = new GameDeleteManager();
-        gsm = new GameStartManager();
+        gsm = new GameStartManager(this);
         fm = new FreezeManager();
+        gm = new GameManager();
+        cpm = new CheckpointsManager();
         getServer().getPluginManager().registerEvents(protectedBlocks, this);
         getServer().getPluginManager().registerEvents(gcm, this);
         getServer().getPluginManager().registerEvents(gsm, this);
-
+        getServer().getPluginManager().registerEvents(gm, this);
+        getServer().getPluginManager().registerEvents(cpm, this);
     }
 
     @Override

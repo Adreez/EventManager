@@ -140,9 +140,9 @@ public class GameCreateManager implements Listener {
     public void createGame(String gameID, String creator, Location spawnLoc, Location endingLoc) {
         EventManager.gamesFile.get().set("Games." + gameID + ".info.creator", creator);
         EventManager.gamesFile.get().set("Games." + gameID + ".locations.spawn.world", spawnLoc.getWorld().getName());
-        EventManager.gamesFile.get().set("Games." + gameID + ".locations.spawn.x", spawnLoc.getBlockX());
-        EventManager.gamesFile.get().set("Games." + gameID + ".locations.spawn.y", spawnLoc.getBlockY());
-        EventManager.gamesFile.get().set("Games." + gameID + ".locations.spawn.z", spawnLoc.getBlockZ());
+        EventManager.gamesFile.get().set("Games." + gameID + ".locations.spawn.x", spawnLoc.getX());
+        EventManager.gamesFile.get().set("Games." + gameID + ".locations.spawn.y", spawnLoc.getY());
+        EventManager.gamesFile.get().set("Games." + gameID + ".locations.spawn.z", spawnLoc.getZ());
         EventManager.gamesFile.get().set("Games." + gameID + ".locations.spawn.pitch", spawnLoc.getPitch());
         EventManager.gamesFile.get().set("Games." + gameID + ".locations.spawn.yaw", spawnLoc.getYaw());
 

@@ -23,10 +23,10 @@ public class setspawn extends SubCommand {
     @Override
     public void perform(Player p, String[] args) {
         if (args.length == 1) {
-            EventManager.configFile.get().set("Locations.spawn.world", p.getWorld());
-            EventManager.configFile.get().set("Locations.spawn.x", p.getLocation().getBlockX());
-            EventManager.configFile.get().set("Locations.spawn.y", p.getLocation().getBlockY());
-            EventManager.configFile.get().set("Locations.spawn.z", p.getLocation().getBlockZ());
+            EventManager.configFile.get().set("Locations.spawn.world", p.getWorld().getName());
+            EventManager.configFile.get().set("Locations.spawn.x", p.getLocation().getX());
+            EventManager.configFile.get().set("Locations.spawn.y", p.getLocation().getY());
+            EventManager.configFile.get().set("Locations.spawn.z", p.getLocation().getZ());
             EventManager.configFile.get().set("Locations.spawn.yaw", p.getLocation().getYaw());
             EventManager.configFile.get().set("Locations.spawn.pitch", p.getLocation().getPitch());
             EventManager.configFile.saveConfig();

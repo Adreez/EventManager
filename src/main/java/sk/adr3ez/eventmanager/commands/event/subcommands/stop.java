@@ -25,7 +25,9 @@ public class stop extends SubCommand {
         if (args.length == 1) {
             if (EventManager.gsm.activeGame != null) {
                 EventManager.gsm.stopActiveGame();
-                p.sendMessage("Game will be ended in 10 seconds!");
+                p.sendMessage("Stop game request has been sent!");
+            } else {
+                p.sendMessage("There isn't any active game!");
             }
         } else {
             p.sendMessage("Usage");

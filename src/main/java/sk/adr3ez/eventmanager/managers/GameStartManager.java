@@ -15,13 +15,21 @@ import java.util.ArrayList;
 
 public class GameStartManager implements Listener {
 
+    public final EventManager plugin;
+    public GameStartManager(EventManager plugin) {
+        this.plugin = plugin;
+    }
+
     public String activeGame = null;
-    public ArrayList<Player> joinedPlayers = new ArrayList<>();
+    public static ArrayList<Player> joinedPlayers = new ArrayList<>();
+
+    int cooldown;
 
     public void startGame(String gameID) {
         if (EventManager.gcm.gameExists(gameID)) {
             if (activeGame == null) {
                 activeGame = gameID;
+                cooldown = 20;
                 if (EventManager.configFile.get().getBoolean("Settings.auto-game-join")) {
                     for (Player ep : Bukkit.getOnlinePlayers()) {
                         addPlayer(ep);
@@ -82,30 +90,38 @@ public class GameStartManager implements Listener {
         }
     }
 
-    int cooldown;
     public void stopActiveGame() {
         if (activeGame != null) {
-            cooldown = 0;
 
             BukkitTask id = Bukkit.getServer().getScheduler().runTaskTimer(EventManager.plugin, () -> {
                 if (cooldown > 0) {
-                    Bukkit.getServer().broadcastMessage("Events starts in " + cooldown);
-                    for (Player p : EventManager.gsm.joinedPlayers) {
-                        p.sendTitle("§7Event ends in", String.valueOf(cooldown), 20, 40, 0);
+                    Bukkit.getServer().broadcastMessage("Events ends in " + cooldown);
+                    for (Player p : joinedPlayers) {
+                        p.sendTitle("§cEvent ends in", String.valueOf(cooldown), 0, 40, 0);
                     }
                     cooldown--;
                 }else if (cooldown == 0) {
-                    for (Player p : EventManager.gsm.joinedPlayers) {
-                        p.sendTitle("§7Event ends", "§6§lNOW", 20, 40, 20);
+                    for (Player p : joinedPlayers) {
+                        p.sendTitle("§7Event ended", "", 0, 40, 20);
                     }
+                    for (Player ep : joinedPlayers) {
+                        ep.teleport(getSpawnLocation());
+                    }
+                    activeGame = null;
+                    joinedPlayers.clear();
+
+                    EventManager.gm.playerOrder = 1;
+                    EventManager.gm.finishedPlayers.clear();
                 }
             }, 20L, 20L);
-            for (Player ep : joinedPlayers) {
-                ep.teleport(getSpawnLocation());
-            }
-            activeGame = null;
-            joinedPlayers.clear();
         }
+    }
+
+    public Location getEndingLocation(String gameID) {
+        return new Location(Bukkit.getWorld(EventManager.gamesFile.get().getString("Games." + gameID + ".locations.end.world")),
+                EventManager.gamesFile.get().getDouble("Games." + gameID + ".locations.end.x"),
+                EventManager.gamesFile.get().getDouble("Games." + gameID + ".locations.end.y"),
+                EventManager.gamesFile.get().getDouble("Games." + gameID + ".locations.end.z"));
     }
 
     private Location getSpawnLocation() {

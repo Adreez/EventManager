@@ -21,7 +21,12 @@ public class GameStartManager implements Listener {
     }
 
     public String activeGame = null;
-    public static ArrayList<Player> joinedPlayers = new ArrayList<>();
+
+    public static ArrayList<Player> getJoinedPlayers() {
+        return joinedPlayers;
+    }
+
+    private static final ArrayList<Player> joinedPlayers = new ArrayList<>();
 
     int cooldown;
 
@@ -30,6 +35,7 @@ public class GameStartManager implements Listener {
             if (activeGame == null) {
                 activeGame = gameID;
                 cooldown = 20;
+                EventManager.cpm.loadCheckpoints(gameID);
                 if (EventManager.configFile.get().getBoolean("Settings.auto-game-join")) {
                     for (Player ep : Bukkit.getOnlinePlayers()) {
                         addPlayer(ep);
@@ -112,6 +118,7 @@ public class GameStartManager implements Listener {
 
                     EventManager.gm.playerOrder = 1;
                     EventManager.gm.finishedPlayers.clear();
+                    EventManager.cpm.unloadGameCP();
                 }
             }, 20L, 20L);
         }

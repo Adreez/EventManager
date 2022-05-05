@@ -150,7 +150,7 @@ public class GameCreateManager implements Listener {
         EventManager.gamesFile.get().set("Games." + gameID + ".locations.end.x", endingLoc.getBlockX());
         EventManager.gamesFile.get().set("Games." + gameID + ".locations.end.y", endingLoc.getBlockY());
         EventManager.gamesFile.get().set("Games." + gameID + ".locations.end.z", endingLoc.getBlockZ());
-        EventManager.protectedBlocks.addBlock(endingLoc);
+        EventManager.protectedBlocks.addBlock(endingLoc.getBlock().getLocation());
 
         EventManager.gamesFile.saveConfig();
         endingLoc.getBlock().setType(Material.LIGHT_WEIGHTED_PRESSURE_PLATE);

@@ -30,25 +30,31 @@ public class ProtectedBlocks implements Listener {
                         EventManager.gamesFile.get().getDouble("Games." + s + ".locations.end.x"),
                         EventManager.gamesFile.get().getDouble("Games." + s + ".locations.end.y"),
                         EventManager.gamesFile.get().getDouble("Games." + s + ".locations.end.z")));
-               /* protectedBlocks.add(new Location(Bukkit.getWorld(EventManager.games.get().getString("Games." + s + ".locations.end.world")),
-                        EventManager.games.get().getDouble("Games." + s + ".locations.end.x"),
-                        EventManager.games.get().getDouble("Games." + s + ".locations.end.y")-1,
-                        EventManager.games.get().getDouble("Games." + s + ".locations.end.z")));*/
+                if (EventManager.gamesFile.get().getConfigurationSection("Games." + s + ".checkpoints").getKeys(false) != null) {
+                    for (String c : EventManager.gamesFile.get().getConfigurationSection("Games." + s + ".checkpoints").getKeys(false)) {
+
+                        protectedBlocks.add(new Location(Bukkit.getWorld(EventManager.gamesFile.get().getString("Games." + s + ".checkpoints." + c + ".world")),
+                                EventManager.gamesFile.get().getDouble("Games." + s + ".checkpoints." + c + ".x"),
+                                EventManager.gamesFile.get().getDouble("Games." + s + ".checkpoints." + c + ".y"),
+                                EventManager.gamesFile.get().getDouble("Games." + s + ".checkpoints." + c + ".z")));
+                    }
+                }
             }
         }
     }
 
     public void addBlock(Location loc) {
-        protectedBlocks.add(loc.getBlock().getLocation());
+        protectedBlocks.add(loc);
     }
 
     public void deleteBlock(Location loc) {
         protectedBlocks.remove(loc);
+        loc.getBlock().setType(Material.AIR);
     }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
-        if (e.getBlock().getType() == Material.LIGHT_WEIGHTED_PRESSURE_PLATE) {
+        if (e.getBlock().getType() == Material.LIGHT_WEIGHTED_PRESSURE_PLATE || e.getBlock().getType() == Material.HEAVY_WEIGHTED_PRESSURE_PLATE) {
             if (protectedBlocks.contains(e.getBlock().getLocation())) {
                 e.getPlayer().sendMessage("This block is protected!");
                 e.setCancelled(true);

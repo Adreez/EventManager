@@ -22,6 +22,7 @@ public class EventCmdManager implements CommandExecutor {
         subcommands.add(new stop());
         subcommands.add(new leave());
         subcommands.add(new setspawn());
+        subcommands.add(new checkpoint());
     }
 
     @Override

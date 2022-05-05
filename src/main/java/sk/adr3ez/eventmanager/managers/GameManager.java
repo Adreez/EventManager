@@ -26,7 +26,7 @@ public class GameManager implements Listener {
 
         if (e.getAction().equals(Action.PHYSICAL) && e.getClickedBlock().getType() == Material.LIGHT_WEIGHTED_PRESSURE_PLATE) {
             if (EventManager.gsm.activeGame != null) {
-                if (GameStartManager.joinedPlayers.contains(e.getPlayer()) && !finishedPlayers.containsKey(e.getPlayer())) {
+                if (GameStartManager.getJoinedPlayers().contains(e.getPlayer()) && !finishedPlayers.containsKey(e.getPlayer())) {
                     if (e.getClickedBlock().getLocation().getBlockX() == EventManager.gsm.getEndingLocation(EventManager.gsm.activeGame).getBlockX()) {
                         if (e.getClickedBlock().getLocation().getBlockY() == EventManager.gsm.getEndingLocation(EventManager.gsm.activeGame).getBlockY()) {
                             if (e.getClickedBlock().getLocation().getBlockZ() == EventManager.gsm.getEndingLocation(EventManager.gsm.activeGame).getBlockZ()) {

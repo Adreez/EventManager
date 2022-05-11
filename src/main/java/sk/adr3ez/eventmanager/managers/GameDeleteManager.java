@@ -4,8 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import sk.adr3ez.eventmanager.EventManager;
 
-import java.util.logging.Level;
-
 public class GameDeleteManager {
 
     public void deleteGame(String gameID) {

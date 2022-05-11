@@ -33,8 +33,9 @@ public class GameStartManager implements Listener {
     public void startGame(String gameID) {
         if (EventManager.gcm.gameExists(gameID)) {
             if (activeGame == null) {
+                joinedPlayers.clear();
+                EventManager.gm.finishedPlayers.clear();
                 activeGame = gameID;
-                cooldown = 20;
                 EventManager.cpm.loadCheckpoints(gameID);
                 if (EventManager.configFile.get().getBoolean("Settings.auto-game-join")) {
                     for (Player ep : Bukkit.getOnlinePlayers()) {
@@ -95,11 +96,13 @@ public class GameStartManager implements Listener {
             p.sendMessage("You are not in game!");
         }
     }
-
-    public void stopActiveGame() {
+    BukkitTask id;
+    public void stopActiveGame(Integer cooldownValue) {
         if (activeGame != null) {
 
-            BukkitTask id = Bukkit.getServer().getScheduler().runTaskTimer(EventManager.plugin, () -> {
+            cooldown = cooldownValue;
+
+             id = Bukkit.getServer().getScheduler().runTaskTimer(EventManager.plugin, () -> {
                 if (cooldown > 0) {
                     Bukkit.getServer().broadcastMessage("Events ends in " + cooldown);
                     for (Player p : joinedPlayers) {
@@ -113,15 +116,18 @@ public class GameStartManager implements Listener {
                     for (Player ep : joinedPlayers) {
                         ep.teleport(getSpawnLocation());
                     }
+                    EventManager.grm.sendRewards(activeGame);
                     activeGame = null;
-                    joinedPlayers.clear();
 
                     EventManager.gm.playerOrder = 1;
-                    EventManager.gm.finishedPlayers.clear();
                     EventManager.cpm.unloadGameCP();
+                    cancelTask();
                 }
             }, 20L, 20L);
         }
+    }
+    private void cancelTask() {
+        Bukkit.getServer().getScheduler().cancelTask(id.getTaskId());
     }
 
     public Location getEndingLocation(String gameID) {
@@ -131,7 +137,7 @@ public class GameStartManager implements Listener {
                 EventManager.gamesFile.get().getDouble("Games." + gameID + ".locations.end.z"));
     }
 
-    private Location getSpawnLocation() {
+    public Location getSpawnLocation() {
         return new Location(Bukkit.getWorld(EventManager.configFile.get().getString("Locations.spawn.world")),
                 EventManager.configFile.get().getDouble("Locations.spawn.x"),
                 EventManager.configFile.get().getDouble("Locations.spawn.y"),

@@ -15,6 +15,7 @@ C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\Ev
 C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\commands\event\subcommands\stop.java
 C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\commands\event\subcommands\checkpoint.java
 C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\commands\event\subcommands\leave.java
+C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\managers\GameRewardsManager.java
 C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\commands\event\subcommands\delete.java
 C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\managers\GameStartManager.java
 C:\Users\adria\IdeaProjects\EventManager\src\main\java\sk\adr3ez\eventmanager\commands\event\subcommands\start.java

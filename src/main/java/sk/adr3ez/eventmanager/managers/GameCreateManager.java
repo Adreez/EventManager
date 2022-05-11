@@ -14,8 +14,19 @@ import sk.adr3ez.eventmanager.EventManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.logging.Level;
 
 public class GameCreateManager implements Listener {
+
+    private static boolean isInt(String s) {
+        try {
+            Integer.parseInt(s);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 
     private final ArrayList<Player> playersInSetup = new ArrayList<>();
     private final HashMap<Player, String> gameSetupID = new HashMap<>();
@@ -145,6 +156,23 @@ public class GameCreateManager implements Listener {
         EventManager.gamesFile.get().set("Games." + gameID + ".locations.spawn.z", spawnLoc.getZ());
         EventManager.gamesFile.get().set("Games." + gameID + ".locations.spawn.pitch", spawnLoc.getPitch());
         EventManager.gamesFile.get().set("Games." + gameID + ".locations.spawn.yaw", spawnLoc.getYaw());
+
+        EventManager.gamesFile.get().set("Games." + gameID + ".settings.use-global-reward",
+                EventManager.configFile.get().getBoolean("Default-Settings.use-global-reward"));
+
+        if (EventManager.configFile.get().getConfigurationSection("Global-rewards").getKeys(false) != null) {
+            for (String s : EventManager.configFile.get().getConfigurationSection("Global-rewards").getKeys(false)) {
+                if (isInt(s)) {
+                    List<String> listOfRewards = EventManager.configFile.get().getStringList("Global-rewards." + s);
+                    EventManager.gamesFile.get().set("Games." + gameID + ".rewards." + s, listOfRewards);
+                } else {
+                    EventManager.plugin.getLogger().log(Level.WARNING, "Reward " + s + " is incorrect! For reward ID you can only use numbers!");
+                }
+            }
+        } else {
+            EventManager.plugin.getLogger().log(Level.WARNING, "Failed to create rewards due to empty list of Global-rewards in config.yml");
+        }
+        //EventManager.gamesFile.get().set("Games." + gameID + ".rewards.1", "give %player% minecraft:emerald 5");
 
         EventManager.gamesFile.get().set("Games." + gameID + ".locations.end.world", endingLoc.getWorld().getName());
         EventManager.gamesFile.get().set("Games." + gameID + ".locations.end.x", endingLoc.getBlockX());

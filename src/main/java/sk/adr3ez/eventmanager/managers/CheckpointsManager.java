@@ -13,6 +13,7 @@ import sk.adr3ez.eventmanager.EventManager;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 
 public class CheckpointsManager implements Listener {
@@ -26,16 +27,6 @@ public class CheckpointsManager implements Listener {
         }
     }
 
-    public static int getMinValue(int[] array) {
-        int minValue = array[0];
-        for (int i = 1; i < array.length; i++) {
-            if (array[i] < minValue) {
-                minValue = array[i];
-            }
-        }
-        return minValue;
-    }
-
     public HashMap<Player, Integer> playerCheckpoint = new HashMap<>();
 
     public HashMap<Location, Integer> activeCheckpoints = new HashMap<>();
@@ -46,22 +37,27 @@ public class CheckpointsManager implements Listener {
     *  Load checkpoints when you're starting a game.
      */
     public void loadCheckpoints(String gameID) {
-        if (EventManager.gamesFile.get().getConfigurationSection("Games." + gameID + ".checkpoints").getValues(false) != null) {
-            for (String c : EventManager.gamesFile.get().getConfigurationSection("Games." + gameID + ".checkpoints").getKeys(false)) {
-                if (isInt(c)) {
-                    activeCheckpoints.put(new Location(
-                            Bukkit.getWorld(EventManager.gamesFile.get().getString("Games." + gameID + ".checkpoints." + c + ".world")),
-                            EventManager.gamesFile.get().getDouble("Games." + gameID + ".checkpoints." + c + ".x"),
-                            EventManager.gamesFile.get().getDouble("Games." + gameID + ".checkpoints." + c + ".y"),
-                            EventManager.gamesFile.get().getDouble("Games." + gameID + ".checkpoints." + c + ".z")), Integer.valueOf(c));
-                } else {
-                    EventManager.plugin.getLogger().log(Level.WARNING, "Failed to load checkpoint " + c + " for game " + gameID + " because checkpoint name can only be number! This checkpoint will be skipped :)");
+        if (EventManager.gamesFile.get().getConfigurationSection("Games." + gameID + ".checkpoints") != null) {
+            List<String> listOfKeys = new ArrayList<>(EventManager.gamesFile.get().getConfigurationSection("Games." + gameID + ".checkpoints").getKeys(false));
+            if (!listOfKeys.isEmpty()) {
+                for (String c : listOfKeys) {
+                    if (isInt(c)) {
+                        activeCheckpoints.put(new Location(
+                                Bukkit.getWorld(EventManager.gamesFile.get().getString("Games." + gameID + ".checkpoints." + c + ".world")),
+                                EventManager.gamesFile.get().getDouble("Games." + gameID + ".checkpoints." + c + ".x"),
+                                EventManager.gamesFile.get().getDouble("Games." + gameID + ".checkpoints." + c + ".y"),
+                                EventManager.gamesFile.get().getDouble("Games." + gameID + ".checkpoints." + c + ".z")), Integer.valueOf(c));
+                    } else {
+                        EventManager.plugin.getLogger().log(Level.WARNING, "Failed to load checkpoint " + c + " for game " + gameID + " because checkpoint name can only be number! This checkpoint will be skipped :)");
+                    }
                 }
             }
         }
-        ArrayList<Integer> listOfNumbers = new ArrayList<>(activeCheckpoints.values());
-        Collections.sort(listOfNumbers);
-        firstCheckpoint = listOfNumbers.get(0);
+        if (!activeCheckpoints.isEmpty()) {
+            ArrayList<Integer> listOfNumbers = new ArrayList<>(activeCheckpoints.values());
+            Collections.sort(listOfNumbers);
+            firstCheckpoint = listOfNumbers.get(0);
+        }
     }
 
     /*

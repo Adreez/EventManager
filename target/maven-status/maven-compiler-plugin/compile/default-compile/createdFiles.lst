@@ -1,5 +1,4 @@
 sk\adr3ez\eventmanager\managers\FreezeManager.class
-sk\adr3ez\eventmanager\commands\event\EventCmdManager.class
 sk\adr3ez\eventmanager\commands\event\subcommands\delete.class
 sk\adr3ez\eventmanager\managers\GameStartManager.class
 sk\adr3ez\eventmanager\managers\GameManager.class
@@ -9,13 +8,15 @@ sk\adr3ez\eventmanager\commands\event\SubCommand.class
 sk\adr3ez\eventmanager\commands\event\subcommands\create.class
 sk\adr3ez\eventmanager\commands\event\subcommands\start.class
 sk\adr3ez\eventmanager\files\Games.class
-sk\adr3ez\eventmanager\commands\event\subcommands\stop.class
-sk\adr3ez\eventmanager\managers\GameCreateManager.class
-sk\adr3ez\eventmanager\files\Config.class
+sk\adr3ez\eventmanager\managers\GameRewardsManager.class
 sk\adr3ez\eventmanager\managers\GameDeleteManager.class
 sk\adr3ez\eventmanager\commands\event\subcommands\checkpoint.class
 sk\adr3ez\eventmanager\commands\event\subcommands\reload.class
-sk\adr3ez\eventmanager\EventManager.class
 sk\adr3ez\eventmanager\commands\event\subcommands\leave.class
+sk\adr3ez\eventmanager\commands\event\EventCmdManager.class
+sk\adr3ez\eventmanager\commands\event\subcommands\stop.class
+sk\adr3ez\eventmanager\managers\GameCreateManager.class
+sk\adr3ez\eventmanager\files\Config.class
+sk\adr3ez\eventmanager\EventManager.class
 sk\adr3ez\eventmanager\managers\CheckpointsManager.class
 sk\adr3ez\eventmanager\managers\ProtectedBlocks.class

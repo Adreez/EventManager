@@ -9,13 +9,13 @@ import org.bukkit.event.block.BlockBreakEvent;
 import sk.adr3ez.eventmanager.EventManager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ProtectedBlocks implements Listener {
     ArrayList<String> gamesList = new ArrayList<>();
     ArrayList<Location> protectedBlocks = new ArrayList<>();
 
     public ProtectedBlocks() {
-        Bukkit.getServer().getConsoleSender().sendMessage(EventManager.gamesFile.get().getString("Messages.test"));
         if (!EventManager.gamesFile.get().getValues(false).isEmpty()) {
             gamesList.addAll(EventManager.gamesFile.get().getConfigurationSection("Games.").getKeys(false));
         }
@@ -30,13 +30,16 @@ public class ProtectedBlocks implements Listener {
                         EventManager.gamesFile.get().getDouble("Games." + s + ".locations.end.x"),
                         EventManager.gamesFile.get().getDouble("Games." + s + ".locations.end.y"),
                         EventManager.gamesFile.get().getDouble("Games." + s + ".locations.end.z")));
-                if (EventManager.gamesFile.get().getConfigurationSection("Games." + s + ".checkpoints").getKeys(false) != null) {
-                    for (String c : EventManager.gamesFile.get().getConfigurationSection("Games." + s + ".checkpoints").getKeys(false)) {
+                if (EventManager.gamesFile.get().getConfigurationSection("Games." + s + ".checkpoints") != null) {
+                    List<String> listOfKeys = new ArrayList<>(EventManager.gamesFile.get().getConfigurationSection("Games." + s + ".checkpoints").getKeys(false));
+                    if (!listOfKeys.isEmpty()) {
+                        for (String c : listOfKeys) {
 
-                        protectedBlocks.add(new Location(Bukkit.getWorld(EventManager.gamesFile.get().getString("Games." + s + ".checkpoints." + c + ".world")),
-                                EventManager.gamesFile.get().getDouble("Games." + s + ".checkpoints." + c + ".x"),
-                                EventManager.gamesFile.get().getDouble("Games." + s + ".checkpoints." + c + ".y"),
-                                EventManager.gamesFile.get().getDouble("Games." + s + ".checkpoints." + c + ".z")));
+                            protectedBlocks.add(new Location(Bukkit.getWorld(EventManager.gamesFile.get().getString("Games." + s + ".checkpoints." + c + ".world")),
+                                    EventManager.gamesFile.get().getDouble("Games." + s + ".checkpoints." + c + ".x"),
+                                    EventManager.gamesFile.get().getDouble("Games." + s + ".checkpoints." + c + ".y"),
+                                    EventManager.gamesFile.get().getDouble("Games." + s + ".checkpoints." + c + ".z")));
+                        }
                     }
                 }
             }

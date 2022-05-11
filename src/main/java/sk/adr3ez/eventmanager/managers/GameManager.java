@@ -1,5 +1,7 @@
 package sk.adr3ez.eventmanager.managers;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,6 +21,7 @@ public class GameManager implements Listener {
     public void addFinishedPlayer(Player p) {
         finishedPlayers.put(p, playerOrder);
         playerOrder++;
+        p.teleport(EventManager.gsm.getSpawnLocation());
     }
 
     @EventHandler

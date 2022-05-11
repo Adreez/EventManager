@@ -23,6 +23,7 @@ public final class EventManager extends JavaPlugin {
     public static FreezeManager fm;
     public static GameManager gm;
     public static CheckpointsManager cpm;
+    public static GameRewardsManager grm;
 
     @Override
     public void onEnable() {
@@ -42,6 +43,7 @@ public final class EventManager extends JavaPlugin {
         fm = new FreezeManager();
         gm = new GameManager();
         cpm = new CheckpointsManager();
+        grm = new GameRewardsManager();
         getServer().getPluginManager().registerEvents(protectedBlocks, this);
         getServer().getPluginManager().registerEvents(gcm, this);
         getServer().getPluginManager().registerEvents(gsm, this);
